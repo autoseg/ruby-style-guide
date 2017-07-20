@@ -164,11 +164,9 @@ Translations of the guide are available in the following languages:
   class FooError < StandardError
   end
 
-  # okish
+  # good
   class FooError < StandardError; end
 
-  # good
-  FooError = Class.new(StandardError)
   ```
 
 * <a name="no-single-line-methods"></a>
@@ -182,13 +180,13 @@ Translations of the guide are available in the following languages:
   # bad
   def too_much; something; something_else; end
 
-  # okish - notice that the first ; is required
+  # bad - notice that the first ; is required
   def no_braces_method; body end
 
-  # okish - notice that the second ; is optional
+  # bad - notice that the second ; is optional
   def no_braces_method; body; end
 
-  # okish - valid syntax, but no ; makes it kind of hard to read
+  # bad - valid syntax, but no ; makes it kind of hard to read
   def some_method() body end
 
   # good
@@ -254,17 +252,13 @@ Translations of the guide are available in the following languages:
   `{` and `}` deserve a bit of clarification, since they are used
   for block and hash literals, as well as string interpolation.
 
-  For hash literals two styles are considered acceptable.
-  The first variant is slightly more readable (and arguably more
-  popular in the Ruby community in general). The second variant has
-  the advantage of adding visual difference between block and hash
-  literals. Whichever one you pick&mdash;apply it consistently.
+  For hash literals use spaces around `{` and `}`
 
   ```ruby
   # good - space after { and before }
   { one: 1, two: 2 }
 
-  # good - no space after { and before }
+  # bad - no space after { and before }
   {one: 1, two: 2}
   ```
 
@@ -357,7 +351,7 @@ Translations of the guide are available in the following languages:
     calc_something_else
   end
 
-  # good - it's apparent what's going on
+  # bad
   kind = case year
          when 1850..1889 then 'Blues'
          when 1890..1909 then 'Ragtime'
@@ -373,7 +367,7 @@ Translations of the guide are available in the following languages:
              calc_something_else
            end
 
-  # good (and a bit more width efficient)
+  # good (and width efficient)
   kind =
     case year
     when 1850..1889 then 'Blues'
@@ -547,8 +541,9 @@ Translations of the guide are available in the following languages:
   result = 1 \
            - 2
 
-  long_string = 'First part of the long string' \
-                ' and second part of the long string'
+  long_string = 
+    'First part of the long string' \
+    ' and second part of the long string'
   ```
 
 * <a name="consistent-multi-line-chains"></a>
@@ -557,7 +552,7 @@ Translations of the guide are available in the following languages:
     good&mdash;leading `.` (Option A) and trailing `.` (Option B).
 <sup>[[link](#consistent-multi-line-chains)]</sup>
 
-  * **(Option A)** When continuing a chained method invocation on
+  * When continuing a chained method invocation on
     another line keep the `.` on the second line.
 
     ```ruby
@@ -568,20 +563,6 @@ Translations of the guide are available in the following languages:
     # good - it's immediately clear what's going on the second line
     one.two.three
       .four
-    ```
-
-  * **(Option B)** When continuing a chained method invocation on another line,
-    include the `.` on the first line to indicate that the
-    expression continues.
-
-    ```ruby
-    # bad - need to read ahead to the second line to know that the chain continues
-    one.two.three
-      .four
-
-    # good - it's immediately clear that the expression continues beyond the first line
-    one.two.three.
-      four
     ```
 
   A discussion on the merits of both alternative styles can be found
@@ -609,7 +590,7 @@ Translations of the guide are available in the following languages:
         body: source.text)
   end
 
-  # good
+  # bad
   def send_mail(source)
     Mailer.deliver(to: 'bob@example.com',
                    from: 'us@example.com',
@@ -623,7 +604,11 @@ Translations of the guide are available in the following languages:
       to: 'bob@example.com',
       from: 'us@example.com',
       subject: 'Important message',
-      body: source.text
+      body: source.text,
+      options: {
+        foo: 'bar',
+        baz: 'bar
+      }
     )
   end
   ```
@@ -636,17 +621,17 @@ Translations of the guide are available in the following languages:
   # bad - single indent
   menu_item = ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
+    
+  # bad
+  menu_item =
+    ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
+     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
 
   # good
   menu_item = [
     'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam'
   ]
-
-  # good
-  menu_item =
-    ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam',
-     'Baked beans', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam']
   ```
 
 * <a name="underscores-in-numerics"></a>
@@ -689,11 +674,11 @@ Translations of the guide are available in the following languages:
 <sup>[[link](#rdoc-conventions)]</sup>
 
 * <a name="80-character-limits"></a>
-  Limit lines to 80 characters.
+  Avoid lines bigger than 80 characters. Do not use lines bigger than 120 characters.
 <sup>[[link](#80-character-limits)]</sup>
 
 * <a name="no-trailing-whitespace"></a>
-  Avoid trailing whitespace.
+  No trailing whitespaces!
 <sup>[[link](#no-trailing-whitespace)]</sup>
 
 * <a name="newline-eof"></a>
@@ -1158,9 +1143,6 @@ Translations of the guide are available in the following languages:
 
   # good
   do_something if some_condition
-
-  # another good option
-  some_condition && do_something
   ```
 
 * <a name="no-multiline-if-modifiers"></a>
@@ -1192,7 +1174,7 @@ Translations of the guide are available in the following languages:
   do_something if other_condition if some_condition
 
   # good
-  do_something if some_condition && other_condition
+  do_something if (some_condition && other_condition)
   ```
 
 * <a name="unless-for-negatives"></a>
@@ -1208,9 +1190,6 @@ Translations of the guide are available in the following languages:
 
   # good
   do_something unless some_condition
-
-  # another good option
-  some_condition || do_something
   ```
 
 * <a name="no-else-with-unless"></a>
@@ -1526,7 +1505,7 @@ condition](#safe-assignment-in-condition).
     # some code
   end
 
-  # good (MRI would still complain, but RuboCop won't)
+  # bad
   if (v = array.grep(/foo/))
     do_something(v)
     # some code
@@ -1703,12 +1682,6 @@ condition](#safe-assignment-in-condition).
 
   def foo(x)
     bar(x)
-  end
-
-  # also good
-  def foo(x)
-    bar = ->(y) { ... }
-    bar.call(x)
   end
   ```
 
@@ -2250,7 +2223,7 @@ no parameters.
 
 * <a name="bool-methods-prefix"></a>
   Avoid prefixing predicate methods with the auxiliary verbs such as `is`,
-  `does`, or `can`.  These words are redundant and inconsistent with the style of
+  or `does`.  These words are redundant and inconsistent with the style of
   boolean methods in the Ruby core library, such as `empty?` and `include?`.
 <sup>[[link](#bool-methods-prefix)]</sup>
 
@@ -2259,10 +2232,6 @@ no parameters.
   class Person
     def is_tall?
       true
-    end
-
-    def can_play_basketball?
-      false
     end
 
     def does_like_candy?
@@ -2274,10 +2243,6 @@ no parameters.
   class Person
     def tall?
       true
-    end
-
-    def basketball_player?
-      false
     end
 
     def likes_candy?
