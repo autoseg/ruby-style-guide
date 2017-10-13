@@ -2420,12 +2420,6 @@ no parameters.
   and should be refactored away.
 <sup>[[link](#hack)]</sup>
 
-* <a name="review"></a>
-  Use `REVIEW` to note anything that should be looked at to confirm it is
-  working as intended. For example: `REVIEW: Are we sure this is how the client
-  does X currently?`
-<sup>[[link](#review)]</sup>
-
 * <a name="document-annotations"></a>
   Use other custom annotation keywords if it feels appropriate, but be sure to
   document them in your project's `README` or similar.
@@ -2496,6 +2490,8 @@ no parameters.
     # Some code
   end
   ```
+  
+  * When defining the encoding in a magic comment, use the following format: `# encoding: UTF-8`.
 
 ## Classes & Modules
 
@@ -3370,10 +3366,10 @@ resource cleanup when possible.
 <sup>[[link](#percent-w)]</sup>
 
   ```ruby
-  # bad
+  # good
   STATES = ['draft', 'open', 'closed']
 
-  # good
+  # better
   STATES = %w[draft open closed]
   ```
 
@@ -3384,10 +3380,10 @@ resource cleanup when possible.
 <sup>[[link](#percent-i)]</sup>
 
   ```ruby
-  # bad
+  # good
   STATES = [:draft, :open, :closed]
 
-  # good
+  # bad
   STATES = %i[draft open closed]
   ```
 
@@ -3653,9 +3649,6 @@ resource cleanup when possible.
 
   # good
   email_with_name = "#{user.name} <#{user.email}>"
-
-  # good
-  email_with_name = format('%s <%s>', user.name, user.email)
   ```
 
 * <a name="consistent-string-literals"></a>
@@ -3664,7 +3657,7 @@ resource cleanup when possible.
   quotes by default (Option A) and double quotes by default (Option B).
 <sup>[[link](#consistent-string-literals)]</sup>
 
-  * **(Option A)** Prefer single-quoted strings when you don't need
+  * Prefer single-quoted strings when you don't need
     string interpolation or special symbols such as `\t`, `\n`, `'`,
     etc.
 
@@ -3675,19 +3668,23 @@ resource cleanup when possible.
     # good
     name = 'Bozhidar'
     ```
-
-  * **(Option B)** Prefer double-quotes unless your string literal
-    contains `"` or escape characters you want to suppress.
-
+  * Use %() to define single-line strings which require
+    interpolation and embedded double-quotes. For multi-line strings, prefer heredocs.
+    
     ```ruby
-    # bad
-    name = 'Bozhidar'
+    # This is good
+    %(<div class="my-class">#{my_content}</div>)
 
-    # good
-    name = "Bozhidar"
+    # Instead of this...
+    %(<div>\n<span class="my-class">Content</span>\n</div>)
+
+    # ...you should do this.
+    <<-STR
+    <div>
+      <span class="my-class">Content</span>
+    </div>
+    STR
     ```
-
-  The string literals in this guide are aligned with the first style.
 
 * <a name="no-character-literals"></a>
   Don't use the character literal syntax `?x`. Since Ruby 1.9 it's basically
